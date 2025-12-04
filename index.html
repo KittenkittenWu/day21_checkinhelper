@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Check-in System</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="app-background"></div>
+
+    <main id="app-container">
+        <!-- View: Search -->
+        <section id="view-search" class="view active">
+            <div class="card-header">
+                <h1>歡迎報到</h1>
+                <p>請輸入您的手機號碼進行查詢</p>
+            </div>
+            <div class="form-group">
+                <input type="tel" id="input-phone" placeholder="0912345678" maxlength="10" autocomplete="off">
+            </div>
+            <button id="btn-search" class="btn-primary">查詢</button>
+
+            <div class="test-hint">
+                <p><strong>測試帳號說明</strong></p>
+                <p>尚未報到測試帳號：0987654321</p>
+                <p>已報到測試帳號：0912345678</p>
+            </div>
+        </section>
+
+        <!-- View: Confirm (Hidden) -->
+        <section id="view-confirm" class="view hidden">
+            <div class="card-header">
+                <h1>確認資料</h1>
+                <p>請確認以下資訊是否正確</p>
+            </div>
+            <div class="info-card">
+                <div class="info-row">
+                    <span class="label">學員編號</span>
+                    <span class="value" id="confirm-id">--</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">姓名</span>
+                    <span class="value" id="confirm-name">--</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">課程名稱</span>
+                    <span class="value" id="confirm-course">--</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">日期</span>
+                    <span class="value" id="confirm-date">--</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="btn-back" class="btn-secondary">返回</button>
+                <button id="btn-checkin" class="btn-primary">確認報到</button>
+            </div>
+        </section>
+
+        <!-- View: Success (Hidden) -->
+        <section id="view-success" class="view hidden">
+            <div class="success-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+            </div>
+            <h1>報到成功！</h1>
+            <p>歡迎參加本次課程</p>
+            <p class="timestamp" id="success-time"></p>
+            <button id="btn-home" class="btn-secondary">回到首頁</button>
+        </section>
+
+        <!-- View: Loading (Overlay) -->
+        <div id="view-loading" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <p>處理中...</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

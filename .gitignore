@@ -1,0 +1,4 @@
+.DS_Store
+.clasp.json
+.gemini/
+node_modules/
