@@ -127,6 +127,17 @@ function handleCheckIn(payload) {
         };
       }
 
+      // 特殊邏輯：測試帳號 (0987654321) 不寫入資料庫，永遠保持未報到狀態
+      // 注意：這裡我們比對的是 row[COL_PHONE]，需要轉成字串
+      if (String(row[COL_PHONE]) === '0987654321') {
+        Logger.log(`Test account check-in intercepted for ID: ${id}`);
+        return {
+          success: true,
+          timestamp: new Date().toISOString(),
+          message: "測試帳號報到成功 (模擬)"
+        };
+      }
+
       const timestamp = new Date().toISOString();
 
       // 更新試算表
