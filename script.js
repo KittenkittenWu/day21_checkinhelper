@@ -25,7 +25,11 @@ const display = {
     name: document.getElementById('confirm-name'),
     course: document.getElementById('confirm-course'),
     date: document.getElementById('confirm-date'),
-    successTime: document.getElementById('success-time')
+    date: document.getElementById('confirm-date'),
+    successTime: document.getElementById('success-time'),
+    // New headers
+    title: document.getElementById('confirm-title'),
+    desc: document.getElementById('confirm-desc')
 };
 
 const buttons = {
@@ -88,7 +92,9 @@ async function callAPI(action, payload) {
 }
 
 async function handleSearch() {
-    const phone = inputs.phone.value.trim();
+    // Sanitize phone input: remove all non-digit characters
+    // This handles spaces, dashes, parentheses, etc.
+    const phone = inputs.phone.value.replace(/\D/g, '');
 
     if (!phone) {
         alert("請輸入手機號碼");
@@ -120,6 +126,18 @@ function renderConfirmView(user) {
     display.name.textContent = user.name;
     display.course.textContent = user.course_name;
     display.date.textContent = user.course_date;
+
+    // Handle Already Checked In
+    if (user.status === 'CheckedIn') {
+        display.title.textContent = "已完成報到";
+        display.desc.textContent = "您已完成報到，以下是您的報到資料";
+        buttons.checkin.classList.add('hidden');
+    } else {
+        // Reset to default
+        display.title.textContent = "確認資料";
+        display.desc.textContent = "請確認以下資訊是否正確";
+        buttons.checkin.classList.remove('hidden');
+    }
 }
 
 async function handleCheckIn() {

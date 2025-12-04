@@ -7,6 +7,8 @@
 
 // --- 設定 ---
 const SHEET_NAME = "Attendees";
+const CACHE_KEY = "SHEET_DATA";
+const CACHE_DURATION = 600; // 快取 10 分鐘
 
 // 欄位索引 (從 0 開始)
 const COL_ID = 0;          // A: id (學員編號)
@@ -67,8 +69,8 @@ function handleQuery(payload) {
   const phone = payload.phone;
   if (!phone) throw new Error("缺少參數：phone");
 
-  const sheet = getSheet();
-  const data = sheet.getDataRange().getValues();
+  // 改用 loadData() 讀取資料 (含快取)
+  const data = loadData();
 
   // 跳過標題列 (索引 0)
   for (let i = 1; i < data.length; i++) {
@@ -145,6 +147,9 @@ function handleCheckIn(payload) {
       sheet.getRange(i + 1, COL_STATUS + 1).setValue("CheckedIn");
       sheet.getRange(i + 1, COL_CHECK_IN_TIME + 1).setValue(timestamp);
 
+      // 重要：更新成功後，清除快取，確保下次查詢能讀到最新狀態
+      invalidateCache();
+
       return {
         success: true,
         timestamp: timestamp
@@ -156,6 +161,40 @@ function handleCheckIn(payload) {
     success: false,
     message: "找不到使用者 ID。"
   };
+}
+
+/**
+ * 讀取資料：優先從快取讀取，若無則讀取試算表並寫入快取。
+ */
+function loadData() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get(CACHE_KEY);
+
+  if (cached) {
+    Logger.log("Hit Cache!");
+    return JSON.parse(cached);
+  }
+
+  Logger.log("Miss Cache. Loading from Sheet...");
+  const sheet = getSheet();
+  const data = sheet.getDataRange().getValues();
+
+  // 嘗試寫入快取 (簡單版，假設資料量 < 100KB)
+  try {
+    cache.put(CACHE_KEY, JSON.stringify(data), CACHE_DURATION);
+  } catch (e) {
+    Logger.log("Cache put failed (likely too big): " + e);
+  }
+
+  return data;
+}
+
+/**
+ * 清除快取
+ */
+function invalidateCache() {
+  CacheService.getScriptCache().remove(CACHE_KEY);
+  Logger.log("Cache Invalidated.");
 }
 
 /**
