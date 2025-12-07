@@ -6,7 +6,7 @@
  */
 
 // --- Configuration ---
-const API_URL = "https://script.google.com/macros/s/AKfycbwFBJFAOzOwdZlL925zWLV0Z1StlsUevxg4M-NZwASsZXqiZsqdkh_Zet1L83P6LcVbuA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxfv4QYxBMZQN_SUoBkmuXc1R5Qg3jrJPVATTAOH3jmShoX_4VyisqlWkKMK5GVlCqaVQ/exec";
 
 // --- DOM Elements ---
 const views = {
