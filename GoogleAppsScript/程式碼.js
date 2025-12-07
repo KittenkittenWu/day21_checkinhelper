@@ -248,3 +248,5 @@ function initialSetup() {
 
   Logger.log("設定完成。工作表 'Attendees' 已建立/更新。");
 }
+
+Push → version → deploy
